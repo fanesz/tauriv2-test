@@ -46,7 +46,7 @@ class BaseRepository {
     return { where: whereClause, values: newValues };
   }
 
-  #validatePaginator(props: paginator): getValidatedPaginatorProps {
+  #validatePaginator(props: Paginator): ValidatedPaginator {
     const { page, limit } = props;
 
     const DEFAULT_LIMIT = 10;
@@ -69,20 +69,20 @@ class BaseRepository {
   }
 }
 
-type HandlePaginatorProps = paginator;
+type HandlePaginatorProps = Paginator;
 
 type HandlePaginationProps = {
   tableName: string;
   options: Options;
-  paginator: paginator;
+  paginator: Paginator;
 };
 
-type paginator = {
+type Paginator = {
   page: number;
   limit: number;
 };
 
-type getValidatedPaginatorProps = {
+type ValidatedPaginator = {
   newLimit: number;
   newPage: number;
   offset: number;
