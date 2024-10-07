@@ -32,8 +32,8 @@ class ProductRepository extends BaseRepository implements IProductRepository {
 
   async create(product: ProductCreate): Promise<SelectReturn<Product>> {
     const query = `
-    INSERT INTO products (sku, name, description, brand, price, cost, stock_quantity, stock_threshold, is_active)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::boolean)
+    INSERT INTO products (sku, name, description, brand, price, stock_quantity, is_active)
+    VALUES ($1, $2, $3, $4, $5, $6, $7::boolean)
     RETURNING product_id
     `;
 
@@ -44,7 +44,6 @@ class ProductRepository extends BaseRepository implements IProductRepository {
       product.brand,
       product.price,
       product.stockQuantity,
-      product.stockThreshold,
       product.isActive ?? true,
     ]);
   }

@@ -8,7 +8,6 @@ const CreateProduct = () => {
   const fetchProducts = async () => {
     const payload = {
       brand: "Apple",
-      cost: 1000,
       description: "iPhone 13",
       name: "iPhone 13",
       price: 1200,

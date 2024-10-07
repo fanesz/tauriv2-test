@@ -8,13 +8,13 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "tdev": "tauri dev"
+    "tdev": "tauri dev",
+    "migration:create": "migrate create -ext sql -dir migrations/ $npm_config_name -tz UTC"
   },
   "dependencies": {
     "@tauri-apps/api": ">=2.0.0",
     "@tauri-apps/plugin-shell": ">=2.0.0",
     "@tauri-apps/plugin-sql": "~2",
-    "faker": "^6.6.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zustand": "^5.0.0-rc.2"

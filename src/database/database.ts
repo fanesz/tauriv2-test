@@ -35,6 +35,20 @@ class Database {
     }
   }
 
+  async disconnect(callback: Callback) {
+    if (!this.pool) {
+      callback.onSuccess();
+      return;
+    }
+    try {
+      await this.pool.close();
+      this.pool = undefined;
+      callback.onSuccess();
+    } catch (error) {
+      callback.onError(new Error("Failed to disconnect from database"));
+    }
+  }
+
   async select<T>(
     query: string,
     bindValues?: unknown[]

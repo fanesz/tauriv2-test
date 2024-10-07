@@ -8,7 +8,6 @@ export type Product = {
   brand: string;
   price: number;
   stock_quantity: number;
-  stock_threshold: number;
   is_active: boolean;
   created_at: string;
   updated_at: string;

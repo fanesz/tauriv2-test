@@ -123,15 +123,6 @@ const ProductDetails = ({ product }: { product: Product }) => {
           marginBottom: "10px",
         }}
       >
-        <strong>Stock Threshold:</strong> {product.stock_threshold}
-      </div>
-      <div
-        style={{
-          borderBottom: "1px solid #eee",
-          paddingBottom: "10px",
-          marginBottom: "10px",
-        }}
-      >
         <strong>Active:</strong> {product.is_active ? "Yes" : "No"}
       </div>
       <div
