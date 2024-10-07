@@ -26,9 +26,12 @@ export default defineConfig(async () => ({
   resolve: {
     alias: {
       "@database": "/src/database",
+      "@types": "/src/common/types/index.ts",
+      "@blueprint": "/src/common/types/blueprint.ts",
       "@utils": "/src/common/utils",
-      "@entities": "/src/internal/entities",
-      "@services": "/src/internal/services",
+      "@infrastructure": "/src/infrastructure",
+
+      "@product": "/src/modules/product",
     },
   },
 }));

@@ -1,15 +1,23 @@
-import { Product } from "@entities/product";
-import ProductService from "@services/product";
+import { Product } from "@product/entity";
+import ProductService from "@product/service";
 import { useState } from "react";
 
 const GetProduct = () => {
-  const [result, setResult] = useState<Product[]>();
+  const [result, setResult] = useState<Product>();
   const [query, setQuery] = useState("");
   const productService = new ProductService();
 
   const fetchProducts = async () => {
-    const res = await productService.getByName(query);
-    setResult(res);
+    await productService.getByID(
+      { productID: Number(query) },
+      {
+        onSuccess: (res) => {
+          if (res) setResult(res);
+          else alert("Product not found");
+        },
+        onError: (err) => alert(err),
+      }
+    );
   };
 
   return (
@@ -24,7 +32,7 @@ const GetProduct = () => {
         }}
       />
       <button onClick={fetchProducts}>Fetch</button>
-      {result && result.length !== 0 && <ProductDetails product={result[0]} />}
+      {result && <ProductDetails product={result} />}
     </div>
   );
 };
@@ -98,15 +106,6 @@ const ProductDetails = ({ product }: { product: Product }) => {
         }}
       >
         <strong>Price:</strong> ${product.price}
-      </div>
-      <div
-        style={{
-          borderBottom: "1px solid #eee",
-          paddingBottom: "10px",
-          marginBottom: "10px",
-        }}
-      >
-        <strong>Cost:</strong> ${product.cost}
       </div>
       <div
         style={{

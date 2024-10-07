@@ -1,4 +1,4 @@
-import ProductService from "@services/product";
+import ProductService from "@product/service";
 import { useState } from "react";
 
 const CreateProduct = () => {
@@ -6,25 +6,26 @@ const CreateProduct = () => {
   const [newProduct, setNewProduct] = useState<number>();
 
   const fetchProducts = async () => {
-    const res = await productService.create({
+    const payload = {
       brand: "Apple",
       cost: 1000,
       description: "iPhone 13",
       name: "iPhone 13",
       price: 1200,
       sku: "iphone13",
-      stock_quantity: 10,
-      stock_threshold: 5,
+      stockQuantity: 10,
+      stockThreshold: 5,
+    };
+    await productService.create(payload, {
+      onSuccess: (data) => setNewProduct(data),
+      onError: (error) => console.error(error),
     });
-    console.log(res);
-
-    setNewProduct(res);
   };
 
   return (
     <div>
       <button onClick={fetchProducts}>Create!</button>
-      create product: {newProduct}
+      created product ID: {newProduct}
     </div>
   );
 };

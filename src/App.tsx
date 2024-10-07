@@ -3,6 +3,7 @@ import "./App.css";
 import Database from "@database/database";
 import GetProduct from "./GetProduct";
 import CreateProduct from "./CreateProduct";
+import GetAllProduct from "./GetAllProduct";
 
 function App() {
   const database = Database.getInstance();
@@ -20,6 +21,7 @@ function App() {
 
       <GetProduct />
       <CreateProduct />
+      <GetAllProduct />
     </div>
   );
 }

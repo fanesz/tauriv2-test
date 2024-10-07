@@ -1,6 +1,7 @@
-import TauriDatabase, { QueryResult } from "@tauri-apps/plugin-sql";
+import { createExecuteReturn, createSelectReturn } from "@blueprint";
+import TauriDatabase from "@tauri-apps/plugin-sql";
+import { Callback, ExecuteReturn, SelectReturn } from "@types";
 import env from "@utils/env";
-import { Callback } from "./interfaces";
 
 class Database {
   private static instance: Database;
@@ -30,27 +31,55 @@ class Database {
       this.pool = pool;
       callback.onSuccess();
     } catch (error) {
-      callback.onError({
-        name: "DatabaseError",
-        message: error as string,
-      });
+      callback.onError(new Error("Failed to connect to database"));
     }
   }
 
-  async select<T>(query: string, bindValues?: unknown[]): Promise<T> {
+  async select<T>(
+    query: string,
+    bindValues?: unknown[]
+  ): Promise<SelectReturn<T>> {
+    const result = createSelectReturn<T>();
+
     if (!this.pool) {
-      throw new Error("Database not connected");
+      result.error = new Error("Database not connected");
+      return result;
     }
 
-    return await this.pool.select(query, bindValues);
+    try {
+      const data = await this.pool.select<T[]>(query, bindValues);
+      result.isSuccess = true;
+      result.data = data;
+    } catch (error) {
+      result.error = error;
+    }
+
+    return result;
   }
 
-  async execute(query: string, bindValues?: unknown[]): Promise<QueryResult> {
+  async execute(query: string, bindValues?: unknown[]): Promise<ExecuteReturn> {
+    const result = createExecuteReturn();
+
     if (!this.pool) {
-      throw new Error("Database not connected");
+      result.error = new Error("Database not connected");
+      return result;
     }
 
-    return await this.pool.execute(query, bindValues);
+    try {
+      const data = await this.pool.execute(query, bindValues);
+      result.isSuccess = true;
+      result.lastInsertId = data.lastInsertId;
+      result.rowsAffected = data.rowsAffected;
+    } catch (error) {
+      result.error = error;
+    }
+
+    return result;
+  }
+
+  async count(query: string, bindValues?: unknown[]): Promise<number> {
+    const result = await this.select<{ count: number }>(query, bindValues);
+    return result.data[0]?.count ?? 0;
   }
 }
 
